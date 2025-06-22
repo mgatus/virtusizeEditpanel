@@ -51,7 +51,7 @@
         <!-- Gravatar -->
         <div class="text-center relative" x-data="{ tooltip: false }">
           <div @mouseenter="tooltip = true" @mouseleave="tooltip = false" class="inline-block relative">
-            <img :src="gravatar" class="w-24 h-24 rounded-full mx-auto border-4 border-[#955f75] cursor-pointer"
+            <img :src="gravatar" class="w-24 h-24 rounded-full mx-auto border-4 border-blue-400 cursor-pointer"
               alt="Profile Picture" />
 
             <!-- Tooltip -->
@@ -78,7 +78,7 @@
     </div>
     <!-- Right Column -->
     <div class="w-full md:w-8/10 lg:w-8/10 xl:w-8/10 md:basis-8/10 lg:basis-8/10 xl:basis-8/10 md:max-w-[80%] bg-white">
-      <div class="w-full mt-[4rem] bg-gray-50 min-h-screen h-screen shadow-xl p-[4rem]">
+      <div class="w-full mt-[4rem] bg-gray-100 min-h-screen h-screen shadow-xl p-[4rem]">
         <!-- Edit Icon with Tooltip -->
         <template x-if="!editing">
           <div class="flex justify-end" x-data="{ showTooltip: false }">
@@ -134,7 +134,7 @@
         <div class="mb-6 relative">
           <label class="block text-sm font-semibold mb-1 label">Email</label>
           <template x-if="editing">
-            <div class="relative">
+            <div class="relative w-full md:w-1/2 ">
               <input x-model="email" @blur="validate" class="border px-2 py-1 rounded w-full" placeholder="Email">
               <template x-if="errors.email">
                 <div class="absolute -top-8 right-0 bg-red-500 text-white text-xs rounded px-2 py-1 shadow-lg z-50"
@@ -151,14 +151,14 @@
 
         <!-- Password -->
 
-        <div>
+        <div class="w-full md:w-1/2 ">
           <label class="block text-sm font-semibold mb-1" x-text="editing ? 'Change Password' : 'Password'"></label>
           <div class="relative">
             <template x-if="editing">
               <div>
                 <input :type="showPassword ? 'text' : 'password'" x-model="password" @input="updateStrength"
                   class="w-full border px-2 py-1 rounded bg-white label" placeholder="New Password" />
-                <button type="button" @click="showPassword = !showPassword" class="absolute right-2 top-2">
+                <button type="button" @click="showPassword = !showPassword" class="absolute right-2 top-1">
                   <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-gray-500"></i>
                 </button>
               </div>
