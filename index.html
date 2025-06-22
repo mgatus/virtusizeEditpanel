@@ -97,7 +97,7 @@
         <!-- Full Name -->
         <div class="mb-6 relative">
           <template x-if="!editing">
-            <label class="block text-sm font-semibold mb-1 label">Full Name</label>
+            <label class="block text-xs font-semibold mb-1 label">Full Name</label>
           </template>
           <template x-if="editing">
             <div class="flex gap-2">
@@ -132,7 +132,7 @@
 
         <!-- Email -->
         <div class="mb-6 relative">
-          <label class="block text-sm font-semibold mb-1 label">Email</label>
+          <label class="block text-xs font-semibold mb-1 label">Email</label>
           <template x-if="editing">
             <div class="relative w-full md:w-1/2 ">
               <input x-model="email" @blur="validate" class="border px-2 py-1 rounded w-full" placeholder="Email">
@@ -152,7 +152,7 @@
         <!-- Password -->
 
         <div class="w-full md:w-1/2 ">
-          <label class="block text-sm font-semibold mb-1" x-text="editing ? 'Change Password' : 'Password'"></label>
+          <label class="block text-xs font-semibold mb-1 label" x-text="editing ? 'Change Password' : 'Password'"></label>
           <div class="relative">
             <template x-if="editing">
               <div>
