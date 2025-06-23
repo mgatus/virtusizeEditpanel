@@ -31,8 +31,17 @@ It features editable user details, password strength checking, Gravatar integrat
 ## Usage
 
 1. **Clone or download this repository.**
-2. Open `index.html` in your browser.  
-   (No build step is required; all dependencies are loaded via CDN.)
+2. **Important:**  
+   This project **requires running on a local or remote server** (such as VS Code Live Server, Python's `http.server`, or any static hosting) to work properly.  
+   Opening `index.html` directly in your browser (`file://`) will cause errors with ES modules and some features will not work.
+3. Open `index.html` in your browser **via a server**.
+
+---
+
+## Live Demo
+
+You can also access the deployed project here:  
+**[https://mgatus.github.io/virtusizeEditpanel/](https://mgatus.github.io/virtusizeEditpanel/)**
 
 ---
 
