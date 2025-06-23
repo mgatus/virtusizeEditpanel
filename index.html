@@ -14,50 +14,7 @@
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --default-color: #2A2A2A;
-      --label-color: #696969;
-    }
-
-    body {
-      font-family: 'Open Sans', sans-serif;
-      color: var(--default-color);
-    }
-    
-    /* Smoothen the animation */
-    html, body, .bg-white, .bg-gray-100, .dark\:bg-gray-900, .dark\:bg-gray-700 {
-    transition: background-color 0.5s cubic-bezier(0.4,0,0.2,1), color 0.5s cubic-bezier(0.4,0,0.2,1);
-    }
-
-    /* Example: use the variable for backgrounds or other elements */
-    .bg-default {
-      background-color: var(--default-color);
-    }
-
-    .text-default {
-      color: var(--default-color);
-    }
-
-    .label {
-      color: var(--label-color);
-    }
-    
-    /* Smooth tooltip animation (improved) */
-    .tooltip-transition {
-      transition:
-        opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-        transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      opacity: 0;
-      transform: translateY(-12px) scale(0.96);
-      pointer-events: none;
-    }
-    .tooltip-show {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      pointer-events: auto;
-    }
-  </style>
+  <link rel="stylesheet" href="./assets/css/styles.css">
 </head>
 
 <body>
@@ -260,7 +217,7 @@
   
   </div>
 
-  <script type="module" src="./main.js"></script>
+  <script type="module" src="./assets/js/main.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class'
