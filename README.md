@@ -64,6 +64,8 @@ Use `.bg-default` and `.text-default` classes to apply these colors.
 The profile image uses Gravatar, based on the user's email.  
 Hovering over the image shows a tooltip with the email.
 
+> **Note:** To display your own profile image, you need to [sign up at Gravatar.com](https://gravatar.com) and associate your email address with an avatar. Otherwise, a default identicon will be shown.
+
 ### Validation
 
 - **First Name, Last Name, Email**: Required fields.
