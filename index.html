@@ -37,58 +37,99 @@
     .label {
       color: var(--label-color);
     }
+    
+    /* Smooth tooltip animation (improved) */
+    .tooltip-transition {
+      transition:
+        opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0;
+      transform: translateY(-12px) scale(0.96);
+      pointer-events: none;
+    }
+    .tooltip-show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
   </style>
 </head>
 
 <body>
   <div x-data="accountForm" class="min-h-screen flex flex-col md:flex-row">
+    <!-- Dark mode toggle switch -->
+    <div x-data="{ isDark: localStorage.getItem('theme') === 'dark' }" class="fixed top-4 right-4 flex items-center gap-2 z-50">
+      <span class="text-xs text-gray-600 dark:text-black-300" x-text="isDark ? 'Dark' : 'Light'"></span>
+      <button
+        @click="
+          isDark = !isDark;
+          document.documentElement.classList.toggle('dark', isDark);
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        "
+        :aria-pressed="isDark"
+        class="relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none
+          bg-gray-300 dark:bg-gray-700"
+        type="button"
+      >
+        <span
+          class="absolute left-1 top-1 w-4 h-4 rounded-full bg-white shadow transition-transform duration-300"
+          :class="isDark ? 'translate-x-6' : ''"
+        ></span>
+      </button>
+    </div>
+
     <!-- Left Column -->
-    <div
-      class="w-full md:w-2/10 lg:w-2/10 xl:w-2/10 md:basis-2/10 lg:basis-2/10 xl:basis-2/10 md:max-w-[20%] bg-white p-6 shadow-md">
+    <div class="w-full md:w-2/10 lg:w-2/10 xl:w-2/10 md:basis-2/10 lg:basis-2/10 xl:basis-2/10 md:max-w-[20%] bg-white dark:bg-gray-900 p-6 shadow-md">
       <!-- Left content here -->
 
       <div class="mt-[4rem]">
         <!-- Gravatar -->
         <div class="text-center relative" x-data="{ tooltip: false }">
           <div @mouseenter="tooltip = true" @mouseleave="tooltip = false" class="inline-block relative">
-            <img :src="gravatar" class="w-24 h-24 rounded-full mx-auto border-4 border-blue-400 cursor-pointer"
+            <img :src="gravatar" class="w-24 h-24 rounded-full mx-auto border-4 border-blue-400 dark:border-white cursor-pointer"
               alt="Profile Picture" />
 
             <!-- Tooltip -->
-            <div x-show="tooltip" x-transition
+            <div
+              x-show="tooltip"
+              x-transition:enter="tooltip-transition tooltip-show"
+              x-transition:leave="tooltip-transition"
               class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs rounded py-1 px-2 z-50 shadow-lg"
-              x-cloak x-text="email + ' is your Gravatar account'">
+              x-cloak
+              x-text="email + ' is your Gravatar account'">
             </div>
           </div>
         </div>
 
-
-        <div class="name-details text-center">
+        <div class="name-details text-center dark:text-white">
           <small><strong>Welcome!</strong></small>
           <h1 class="text-2xl font-semibold mt-2 mb-4" x-text="firstName + ' ' + lastName"></h1>
           <div class="flex flex-col items-center justify-center h-32">
-            <blockquote class="italic text-gray-600 border-l-4 border-blue-400 pl-4 text-center">
+            <blockquote class="italic text-gray-600 dark:text-white border-l-4 border-blue-400 dark:border-white pl-4 text-center  text-lg md:text-base">
               “It always seems impossible until it’s done. - Nelson Mandela”
             </blockquote>
           </div>
         </div>
       </div>
 
-      <div class="copyright absolute bottom-6 left-0 w-full p-6 text-xs">© EDIT PANEL 2025</div>
+      <div class="copyright absolute bottom-6 left-0 w-full p-6 text-xs hidden md:block dark:text-white">© EDIT PANEL 2025</div>
     </div>
     <!-- Right Column -->
     <div class="w-full md:w-8/10 lg:w-8/10 xl:w-8/10 md:basis-8/10 lg:basis-8/10 xl:basis-8/10 md:max-w-[80%] bg-white">
-      <div class="w-full mt-[4rem] bg-gray-100 min-h-screen h-screen shadow-xl p-[4rem]">
-        <!-- Edit Icon with Tooltip -->
+      <div class="w-full md:mt-[4rem] bg-gray-100 md:min-h-screen min-h-full md:h-screen shadow-xl p-[4rem] flex flex-col h-[50vh] md:h-screen">
         <template x-if="!editing">
           <div class="flex justify-end" x-data="{ showTooltip: false }">
             <button @mouseenter="showTooltip = true" @mouseleave="showTooltip = false" @click="editing = true"
               class="text-blue-600 hover:text-blue-700 relative">
               <i class="fas fa-edit"></i>
-              <span x-show="showTooltip" x-transition
-              class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded py-1 px-2 z-50 shadow-lg"
-              x-cloak>
-              Edit
+              <span
+                x-show="showTooltip"
+                x-transition:enter="tooltip-transition tooltip-show"
+                x-transition:leave="tooltip-transition"
+                class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded py-1 px-2 z-50 shadow-lg"
+                x-cloak>
+                Edit
               </span>
             </button>
           </div>
@@ -106,8 +147,12 @@
                 <input x-model="firstName" @blur="validate" class="border px-2 py-1 rounded w-full"
                   placeholder="First Name">
                 <template x-if="errors.firstName">
-                  <div class="absolute -top-8 right-0 bg-red-500 text-white text-xs rounded px-2 py-1 shadow-lg z-50"
-                    x-show="errors.firstName" x-transition>
+                  <div
+                    class="absolute -top-8 right-0 bg-red-500 text-white text-xs rounded px-2 py-1 shadow-lg z-50"
+                    x-show="errors.firstName"
+                    x-transition:enter="tooltip-transition tooltip-show"
+                    x-transition:leave="tooltip-transition"
+                  >
                     <span x-text="errors.firstName"></span>
                   </div>
                 </template>
@@ -117,8 +162,12 @@
                 <input x-model="lastName" @blur="validate" class="border px-2 py-1 rounded w-full"
                   placeholder="Last Name">
                 <template x-if="errors.lastName">
-                  <div class="absolute -top-8 right-0 bg-red-500 text-white text-xs rounded px-2 py-1 shadow-lg z-50"
-                    x-show="errors.lastName" x-transition>
+                  <div
+                    class="absolute -top-8 right-0 bg-red-500 text-white text-xs rounded px-2 py-1 shadow-lg z-50"
+                    x-show="errors.lastName"
+                    x-transition:enter="tooltip-transition tooltip-show"
+                    x-transition:leave="tooltip-transition"
+                  >
                     <span x-text="errors.lastName"></span>
                   </div>
                 </template>
@@ -137,8 +186,12 @@
             <div class="relative w-full md:w-1/2 ">
               <input x-model="email" @blur="validate" class="border px-2 py-1 rounded w-full" placeholder="Email">
               <template x-if="errors.email">
-                <div class="absolute -top-8 right-0 bg-red-500 text-white text-xs rounded px-2 py-1 shadow-lg z-50"
-                  x-show="errors.email" x-transition>
+                <div
+                  class="absolute -top-8 right-0 bg-red-500 text-white text-xs rounded px-2 py-1 shadow-lg z-50"
+                  x-show="errors.email"
+                  x-transition:enter="tooltip-transition tooltip-show"
+                  x-transition:leave="tooltip-transition"
+                >
                   <span x-text="errors.email"></span>
                 </div>
               </template>
@@ -150,7 +203,6 @@
         </div>
 
         <!-- Password -->
-
         <div class="w-full md:w-1/2 ">
           <label class="block text-xs font-semibold mb-1 label" x-text="editing ? 'Change Password' : 'Password'"></label>
           <div class="relative">
@@ -197,11 +249,25 @@
           </div>
         </template>
       </div>
+      <div class="copyright relative top-20 left-0 w-full p-6 text-xs block md:hidden text-center">© EDIT PANEL 2025</div>
     </div>
+    
   </div>
+  
   </div>
 
   <script type="module" src="./main.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+  <script>
+    // On page load, set dark mode if user previously selected it
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
 </body>
 
 </html>
